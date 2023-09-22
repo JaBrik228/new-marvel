@@ -8,7 +8,7 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
-import {setScroll, setComics, setComicOffset} from '../../utils/actions';
+import { setScroll, setComics, setComicOffset } from './comicsSlice';
 
 const setContent = (process, newComicsLoadingByBtn) => {
     switch (process) {
@@ -28,8 +28,8 @@ const setContent = (process, newComicsLoadingByBtn) => {
 const ComicsList = () => {
     const [newComicsLoadingByBtn, setNewComicsLoadingByBtn] = useState(false);
 
-    const comics = useSelector(state => state.comics),
-          offset = useSelector(state => state.offset);
+    const comics = useSelector(state => state.comics.comics),
+          offset = useSelector(state => state.comics.offset);
     
     const store = useStore();
     const dispatch = useDispatch();
@@ -53,7 +53,7 @@ const ComicsList = () => {
         }
 
         window.scrollTo({
-            top: store.getState().scrollPos,
+            top: store.getState().comics.scrollPos,
             behavior: "smooth",
         });
 
@@ -66,6 +66,7 @@ const ComicsList = () => {
     }, []);
 
     const placeComics = (comics) => {
+        console.log(comics);
         dispatch(setComics(comics));
         setNewComicsLoadingByBtn(false);
         setNewOffset();

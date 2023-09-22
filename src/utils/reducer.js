@@ -1,4 +1,4 @@
-const initialValue = {scrollPos: 0, comics: [], offset: 210};
+const initialValue = {scrollPos: 0, comics: [], offset: 0};
 
 export const reducer = (state = initialValue, action) => {
     switch (action.type) {

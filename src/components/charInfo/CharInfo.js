@@ -1,22 +1,25 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import useMarvelServices from '../../services/MarvelServices';
 import setContent from '../../utils/setContent';
 import { Link } from 'react-router-dom';
 
+import { useSelector } from 'react-redux';
+
 import './charInfo.scss';
 
-const CharInfo = (props) => {
+const CharInfo = () => {
     const [char, setChar] = useState(null);
 
     const marvelService = useMarvelServices();
+
+    const clickedCharId = useSelector(state => state.selectedChar.selectedChar);
     
 
     useEffect(() => {
-        onCharUpdate(props.clickedCharId);
+        onCharUpdate(clickedCharId);
         // eslint-disable-next-line
-    }, [props.clickedCharId]);
+    }, [clickedCharId]);
 
     const onCharLoaded = (char) => {
         setChar(char);
@@ -34,13 +37,6 @@ const CharInfo = (props) => {
             .getCharacter(id)
             .then(onCharLoaded);
     }
-
-    
-
-    // const loadingChar = marvelService.process === 'loading' ? <Spinner /> : null;
-    // const errorMessage = marvelService.process === 'error' ? <ErrorMessage /> : null;
-    // const skeleton = marvelService.process === 'waiting' ? <Skeleton /> : null;
-    // const component = marvelService.process === 'confirmed' ? <View char={char} /> : null;
 
 
     return (
@@ -87,10 +83,6 @@ const View = ({data}) => {
             </ul>
         </>
     )
-}
-
-CharInfo.propTypes = {
-    clickedCharId: PropTypes.number
 }
 
 export default CharInfo;

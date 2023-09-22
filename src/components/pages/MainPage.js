@@ -6,13 +6,17 @@ import CharSearchForm from "../charSearchFrom/CharSearchForm";
 import { Helmet } from "react-helmet";
 
 import decoration from '../../resources/img/vision.png';
-import { useState } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setSelectedChar } from "./mainPageSlice/mainPageSlice";
 
 const MainPage = () => {
-    const [selectedChar, setChar] = useState(null);
+    const {selectedChar} = useSelector(state => state.selectedChar);
+    const dispatch = useDispatch();
+
 
     function onClickChar(id) {
-        setChar(id);
+        dispatch(setSelectedChar(id));
         document.querySelector(".char__info").scrollIntoView({behavior: 'smooth'});
     }
 

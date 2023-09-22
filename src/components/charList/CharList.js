@@ -6,6 +6,9 @@ import Spinner from '../spinner/Spinner';
 import PropTypes from 'prop-types';
 import { TransitionGroup, Transition } from 'react-transition-group';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { setOffset, setChar } from './charsSlice';
+
 import './charList.scss';
 
 const setContent = (process, firstLoading) => {
@@ -24,19 +27,19 @@ const setContent = (process, firstLoading) => {
 }
 
 const CharList = (props) => {
+    const {chars, offset} = useSelector(state => state.chars);
 
-    const [char, setChar] = useState([]);
+    const dispatch = useDispatch();
+
     const [newCharLoading, setCharLoading] = useState(false);
     const [allCharsLoaded, setCharsLoaded] = useState(false);
-    const [offset, setOffset] = useState(210);
-    const [firstLoading, setFirstLoading] = useState(true);
+    const [firstLoading, setFirstLoading] = useState(chars.length <= 0 ? true : false);
     
     const marvelService = useMarvelServices();
 
     const updateChars = (newChar) => {
-        setChar(char => {
-            return [...char, ...newChar]
-        });
+        dispatch(setChar(newChar))
+
         setCharLoading(false);
         setFirstLoading(false);
         setCharsLoaded(newChar.length === 0 ? true : false);
@@ -53,9 +56,7 @@ const CharList = (props) => {
     }
 
     const loadNextPage = () => {
-        setOffset(offset1 => {
-            return offset1 + 9;
-        });
+        dispatch(setOffset(9));
     }
 
     const loadChars = async (offset) => {
@@ -70,22 +71,25 @@ const CharList = (props) => {
         if (document.documentElement.scrollHeight === document.documentElement.scrollTop + document.documentElement.clientHeight) {
             loadNextPage();
         }
+        // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
         return () => {
             window.removeEventListener('scroll', onScroll);
         }
+        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         loadChars(offset);
+        // eslint-disable-next-line
     }, [offset]);    
     
 
     const {onClickChar, selectedCharId} = props;
     
-    const charItems = char.map((item) => {
+    const charItems = chars.map((item) => {
         const duration = 500;
 
         const defaultStyle = {

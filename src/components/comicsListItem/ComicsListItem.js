@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const ComicsListItem = ({title, image, price, id, styles, scrollDispatch}) => {
+const ComicsListItem = ({title, image, price, id, styles}) => {
     return (
         <li className="comics__item" style={styles}>
             <Link to={`./${id}`}>
